@@ -6,15 +6,35 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 
-from .models import Card
+from .models import Register, Card
 
 
 # Create your views here.
 def index(request):
+    error_message=''
+    if request.method=='POST':
+        username = request.POST['email']
+        password = request.POST['password']
+        post = Register.objects.get(email=username)
+        if post:
+            if password == post.password:
+                error_message='Wrong Password Entered'
+                request.session['username'] = username
+                return HttpResponseRedirect(reverse('hotels:index'))
+            else :
+                error_message='Wrong Username Entered'
+                return HttpResponseRedirect(reverse('hotels:index'))
+        else:
+            return HttpResponseRedirect(reverse('hotels:index'))
+    
     card_list= Card.objects.all()
-    template = loader.get_template('hotels/index.html')
+    logged_in = False
+    if 'username' in request.session:
+        logged_in = True
     context = {
         'card_list' : card_list,
+        'logged_in': logged_in,
+        'error_message': error_message,
     }
     return render(request, 'hotels/index.html', context)
 
@@ -32,4 +52,11 @@ def addCard(request):
     price = request.POST['price']
     card = Card(hotel_name=hotel_name, city=city, state=state, date=date, price=price)
     card.save()
+    return HttpResponseRedirect(reverse('hotels:index'))
+    
+def logoutPage(request):
+    try: 
+        del request.session['username']
+    except:
+        pass
     return HttpResponseRedirect(reverse('hotels:index'))
