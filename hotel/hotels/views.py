@@ -2,8 +2,10 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.urls import reverse
+
 from .models import Card
 
 
@@ -17,4 +19,17 @@ def index(request):
     return render(request, 'hotels/index.html', context)
 
 def makeCard(request):
-    
+    context = {
+        'error_message': False,
+    }
+    return render(request, 'hotels/makeCard.html', context)
+
+def addCard(request):
+    hotel_name = request.POST['hotel_name']
+    city = request.POST['city']
+    state = request.POST['state']
+    date = request.POST['date']
+    price = request.POST['price']
+    card = Card(hotel_name=hotel_name, city=city, state=state, date=date, price=price)
+    card.save()
+    return HttpResponseRedirect(reverse('hotels:index'))

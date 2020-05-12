@@ -1,0 +1,14 @@
+{% if error_message %}
+<p><strong>{{ error_message }}</strong></p>
+{% endif %}
+<br>
+
+<form action="{% url 'hotels:addCard' %}" method="POST">
+    {% csrf_token %}
+    Hotel Name : <input type="text" id="hotel_name" name= "hotel_name"><br>
+    City : <input type="text" id="city" name= "city"><br>
+    State : <input type="text" id="state" name= "state"><br>
+    Date : <input type="date" id="date" name= "date"><br>
+    Number : <input type="number" id="price" name= "price" min="0"><br>
+    <input type="submit" value="addCard">
+</form>

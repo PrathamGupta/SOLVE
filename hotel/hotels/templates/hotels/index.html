@@ -6,9 +6,13 @@
         <li>{{ card.state }}</li>
         <li>{{ card.date }}</li>
         <li>{{ card.price }}</li>
+        <br>
         {% endfor %}
     </ul>
     <br>
+    <a href="{% url 'hotels:makeCard' %}">Make Card</a>
+    <br>
+    
 {% else %}
     <p> No Hotels Available </p>
 {% endif %}
