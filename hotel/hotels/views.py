@@ -14,8 +14,8 @@ def index(request):
     error_message=''
     
     card_list= Card.objects.all()
-    state_list = Card.objects.order_by().values('state').distinct()
-    date_list = Card.objects.order_by().values('date').distinct()
+    state_list = Card.objects.order_by('state').values('state').distinct()
+    date_list = Card.objects.order_by('date').values('date').distinct()
     print(state_list)
     logged_in = False
     if 'username' in request.session:
