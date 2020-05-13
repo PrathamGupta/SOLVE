@@ -64,7 +64,6 @@ def logoutPage(request):
     return HttpResponseRedirect(reverse('hotels:index'))
 
 def loginPage(request):
-    print("JGVKGVKGCVKHGCKHGCKH")
     username = password = ''
     response_data = {'user': '', 'login' : "Failed"}
     if request.POST and request.is_ajax:
@@ -74,7 +73,6 @@ def loginPage(request):
             get_user = Register.objects.get(email=username)
             if get_user.password==password:
                 request.session['username'] = username
-                print("LOGGGEDDDD INNNNN")
                 response_data = {'login' : "Success"}
             else:
                 response_data = {'user':"password wrong"}

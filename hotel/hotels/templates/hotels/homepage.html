@@ -127,15 +127,17 @@
                     $('#password-error').css('display', 'block');
                     submitBtn.prop('disabled', false);
                 }
-                else {
-                    if (login_response.login == "Failed") {
+                else if (login_response.login == "Failed") {
                         alert("Invalid Login!");
-                    }
                 }
-                submitBtn.prop('disabled', false);
+                else {
+                    submitBtn.prop('disabled', false);
+                    $('#login').modal('hide');
+                    console.log("JHGFIYFUYDDHFDHDUYTDURD");
+                }
             },
             error: function(data) {
-                $('#loginModal').modal('hide')
+                $('#loginModal').modal('hide');
             }
         })
     };
