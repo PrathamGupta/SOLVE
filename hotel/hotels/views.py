@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.urls import reverse
 
@@ -64,6 +64,7 @@ def logoutPage(request):
     return HttpResponseRedirect(reverse('hotels:index'))
 
 def loginPage(request):
+    print("JGVKGVKGCVKHGCKHGCKH")
     username = password = ''
     response_data = {}
     if request.POST and request.is_ajax:
@@ -81,4 +82,4 @@ def loginPage(request):
     else:
         username = password = ''
         response_data = {'login': "Failed"}
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
+    return JsonResponse(response_data)

@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="modal-body">
-                <form class="login-form" id="loginform" method="POST" action="">
+                <form class="login-form" id="loginform" method="POST" action="" onsubmit="return submitted()">
                     {% csrf_token %}
                     <div class="form-group">
                         <label class="control-label">E-Mail Address</label>
@@ -96,23 +96,18 @@
     </div>
 </div>
 
-{% block body %}
-{% endblock body %}
-
-
-{% endblock content %}
-
-{% block javascript %}
 <script>
-    $('#loginform').submit(function(e) {
-        console.log("HEY THERE");
+    function submitted() {
+       
         var formId = $(this).attr('id');
         var submitBtn = $(this).find('input[type=submit]');
         submitBtn.prop('disabled', true);
         $('#no-user-error').css('display', 'none');
         $('#password-error').css('display', 'none');
-        e.preventDefault();
+        event.preventDefault();
+        console.log("HEY THERE");
         $.ajax({
+            
             url : "{% url 'hotels:loginPage' %}",
             type: "POST",
             data: $(this).serialize(),
@@ -143,9 +138,18 @@
             error: function(data) {
                 $('#loginModal').modal('hide')
             }
-        });
-    });
+        })
+    };
 </script>
+
+
+{% block body %}
+{% endblock body %}
+
+
+{% endblock content %}
+
+{% block javascript %}
 
 
 {% endblock javascript %}
