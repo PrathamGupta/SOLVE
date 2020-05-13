@@ -66,7 +66,7 @@ def logoutPage(request):
 def loginPage(request):
     print("JGVKGVKGCVKHGCKHGCKH")
     username = password = ''
-    response_data = {}
+    response_data = {'user': '', 'login' : "Failed"}
     if request.POST and request.is_ajax:
         username = request.POST['email']
         password = request.POST['password']
@@ -74,6 +74,7 @@ def loginPage(request):
             get_user = Register.objects.get(email=username)
             if get_user.password==password:
                 request.session['username'] = username
+                print("LOGGGEDDDD INNNNN")
                 response_data = {'login' : "Success"}
             else:
                 response_data = {'user':"password wrong"}
