@@ -45,17 +45,23 @@
 <div id="login" class="modal fade">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <nav class="navbar  navbar-expand-lg navbar-light mb-2 nav-des ">
-                    <ul class="navbar-nav ml-3 mr-auto">
-                        <li class="nav-item">
-                            <h1 class="modal-title">Customer Login</h1>
-                        </li>
-                        <li class="nav-item">
-                            <h1 class="modal-title">Hotel Login</h1>
-                        </li>
-                    </ul>
-                </nav>
+            <div class="modal-header text-center">
+                <div class="container">
+                <div class="flex-row justify-content-center">
+                <div class="row ">
+                    <div class="col">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-light active">
+                              <input type="radio" name="options" id="option1" autocomplete="off" checked> <h5 class="modal-title"><b>Customer Login</b></h5>
+                            </label>
+                            <label class="btn btn-light">
+                              <input type="radio" name="options" id="option2" autocomplete="off"> <h5  class="modal-title"><b>Hotel Login</b></h5>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </div>
             </div>
             <div class="modal-body">
                 <form class="login-form" id="loginform" method="POST" action="">
