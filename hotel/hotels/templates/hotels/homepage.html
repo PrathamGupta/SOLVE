@@ -35,7 +35,7 @@
                 <a class="nav-link text-white" href="#login" data-toggle="modal" data-target="#login">Login</a>   
             </li>
             <li class="nav-item ">
-                <a class="nav-link text-white" href="#login" data-toggle="modal" data-target="#login">Register</a>
+                <a class="nav-link text-white" href="#register" data-toggle="modal" data-target="#register">Register</a>
             </li>
         </ul>
     </div>
@@ -89,10 +89,86 @@
                     </div>
                 </form>
                 <div class="col text-center">
-                    <a href="#" onclick="openForgotPassword()"><b>Forgot Password</b></a>&nbsp;<a href="#">or</a>&nbsp;<a href="#" onclick="openRegister()"><b>Register</b></a>
+                    Dont have an Account Yet? <a href="#register" data-toggle="modal" data-dismiss="modal" data-target="#register"><b>Register</b></a>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="register" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form class="login-form" id="registerform" method="POST" action="" onsubmit="return registered()">
+            {% csrf_token %}
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <div class="container">
+                <div class="flex-row justify-content-center">
+                <div class="row ">
+                    <div class="col">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-light active">
+                              <input type="radio" name="options" id="customer" value="customer" autocomplete="off" checked> <h5 class="modal-title"><b>Customer Register</b></h5>
+                            </label>
+                            <label class="btn btn-light">
+                              <input type="radio" name="options" id="hotel" value="hotel" autocomplete="off"> <h5  class="modal-title"><b>Hotel Register</b></h5>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">First Name</label>
+                                <div>
+                                    <input type="text" class="form-control input" name="first_name" id="first_name" required="required">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Last Name</label>
+                                <div>
+                                    <input type="text" class="form-control input" name="last_name" id="last_name" required="required">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">E-Mail Address</label>
+                        <div>
+                            <input type="email" class="form-control input-lg" name="email1" id="email1" required="required">
+                        </div>
+                    </div>
+                    <p class="text-danger text-center" id="no-user-error1" style="display:none;">Already Registered! Please Login</p>
+                    <div class="form-group">
+                        <label class="control-label">Password</label>
+                        <div>
+                            <input type="password" id="password1" class="form-control input-lg" name="password1" required="required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Confirm Password</label>
+                        <div>
+                            <input type="password" id="checkpassword" class="form-control input-lg" name="checkpassword" required="required">
+                        </div>
+                    </div>
+                    <p class="text-danger text-center" id="password-error1" style="display:none;">Passwords Must Be Matching!</p>
+                    <div class="form-group">
+                        <div>
+                            <div class="form-group text-center"> 
+                                <input type="submit" value="Register" class="btn  btn-lg btn-block btn-cakemporos" id="register-Submit">
+                            </div>  
+                        </div>
+                    </div>
+                <div class="col text-center">
+                    Already have an account? <a href="#login" data-toggle="modal" data-dismiss="modal" data-target="#login"><b>Login</b></a>
+                </div>
+            </div>
+        </div>
+        </form>
     </div>
 </div>
 
@@ -133,11 +209,60 @@
                 else {
                     submitBtn.prop('disabled', false);
                     $('#login').modal('hide');
-                    console.log("JHGFIYFUYDDHFDHDUYTDURD");
                 }
             },
             error: function(data) {
                 $('#loginModal').modal('hide');
+            }
+        })
+    };
+</script>
+<script>
+    function registered() {
+       
+        var formId = $(this).attr('id');
+        var submitBtn = $(this).find('input[type=submit]');
+        submitBtn.prop('disabled', true);
+        $('#no-user-error').css('display', 'none');
+        $('#password-error').css('display', 'none');
+        event.preventDefault();
+        console.log("HEY THERE");
+        $.ajax({
+            
+            url : "http://127.0.0.1:8000/hotels//register/",
+            type: "POST",
+            data: { csrfmiddlewaretoken: "{{ csrf_token }}",  
+                    state:"inactive",
+                    first_name: document.getElementById('first_name').value,
+                    last_name: document.getElementById('last_name').value,
+                    email: document.getElementById('email1').value,
+                    password: document.getElementById('password1').value,
+                    checkpassword: document.getElementById('checkpassword').value,
+                    hotel: document.getElementById('hotel').value,
+                    },
+            success: function(data){
+                console.log(data);
+                var login_response = data;
+                console.log(login_response);
+                if (login_response.user == "already present"){
+                    $('#no-user-error1').css('display', 'block');
+                    submitBtn.prop('disabled', false);
+                }
+                else if (login_response.user == "did not match") {
+                    $('#password-error1').css('display', 'block');
+                    submitBtn.prop('disabled', false);
+                }
+                else if (login_response.login == "Failed") {
+                        alert("Invalid Registration!");
+                }
+                else {
+                    submitBtn.prop('disabled', false);
+                    $('#register').modal('hide');
+                    console.log("JHGFIYFUYDDHFDHDUYTDURD");
+                }
+            },
+            error: function(data) {
+                $('#registerModal').modal('hide');
             }
         })
     };
@@ -149,12 +274,3 @@
 
 
 {% endblock content %}
-
-{% block javascript %}
-
-
-{% endblock javascript %}
-
- 
-{% block javascr %}
-{% endblock javascr %}

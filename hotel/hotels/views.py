@@ -82,3 +82,32 @@ def loginPage(request):
         username = password = ''
         response_data = {'login': "Failed"}
     return JsonResponse(response_data)
+
+
+def register(request):
+    first_name = last_name = email = checkpassword = password = h = ''
+    response_data = {'user' : '', 'passmatch': '', 'login': ''}
+    if request.POST and request.is_ajax:
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        email = request.POST['email']
+        password = request.POST['password']
+        checkpassword = request.POST['checkpassword']
+        h = request.POST['hotel']
+        if password != checkpassword:
+            response_data = {'passmatch' : 'did not match'}
+        try:
+            get_user = Register.objects.get(email=email)
+            response_data={'user': 'already present'}
+        except Register.DoesNotExist:
+            hotel = False
+            if h == 'hotel':
+                hotel=True
+            user = Register(first_name=first_name, last_name= last_name, email= email, password= password, hotel=True)
+            user.save()
+            request.session['username'] = email
+            response_data = {'login' : "Success"}
+    else:
+        first_name = last_name = email = checkpassword = password = h = ''
+        response_data = {'login': 'Failed'}
+    return JsonResponse(response_data)
