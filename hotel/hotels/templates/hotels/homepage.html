@@ -209,6 +209,7 @@
                 else {
                     submitBtn.prop('disabled', false);
                     $('#login').modal('hide');
+                    location.reload();
                 }
             },
             error: function(data) {
@@ -258,7 +259,6 @@
                 else {
                     submitBtn.prop('disabled', false);
                     $('#register').modal('hide');
-                    console.log("JHGFIYFUYDDHFDHDUYTDURD");
                 }
             },
             error: function(data) {

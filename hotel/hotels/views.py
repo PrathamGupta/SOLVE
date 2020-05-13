@@ -12,22 +12,11 @@ from .models import Register, Card
 # Create your views here.
 def index(request):
     error_message=''
-    # if request.method=='POST':
-    #     username = request.POST['email']
-    #     password = request.POST['password']
-    #     post = Register.objects.get(email=username)
-    #     if post:
-    #         if password == post.password:
-    #             error_message='Wrong Password Entered'
-    #             request.session['username'] = username
-    #             return HttpResponseRedirect(reverse('hotels:index'))
-    #         else :
-    #             error_message='Wrong Username Entered'
-    #             return HttpResponseRedirect(reverse('hotels:index'))
-    #     else:
-    #         return HttpResponseRedirect(reverse('hotels:index'))
     
     card_list= Card.objects.all()
+    state_list = Card.objects.order_by().values('state').distinct()
+    date_list = Card.objects.order_by().values('date').distinct()
+    print(state_list)
     logged_in = False
     if 'username' in request.session:
         logged_in = True
@@ -35,9 +24,13 @@ def index(request):
         logged_in = False
     context = {
         'card_list' : card_list,
+        'state_list': state_list,
+        'date_list' : date_list,
         'logged_in': logged_in,
         'error_message': error_message,
     }
+    print("LOGGGEDDDD INNN ISSS")
+    print(logged_in)
     return render(request, 'hotels/base.html', context)
 
 def makeCard(request):
@@ -73,6 +66,7 @@ def loginPage(request):
             get_user = Register.objects.get(email=username)
             if get_user.password==password:
                 request.session['username'] = username
+                request.session.set_expiry(0)
                 response_data = {'login' : "Success"}
             else:
                 response_data = {'user':"password wrong"}
@@ -106,6 +100,7 @@ def register(request):
             user = Register(first_name=first_name, last_name= last_name, email= email, password= password, hotel=True)
             user.save()
             request.session['username'] = email
+            request.session.set_expiry(0)
             response_data = {'login' : "Success"}
     else:
         first_name = last_name = email = checkpassword = password = h = ''
