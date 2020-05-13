@@ -12,31 +12,33 @@ from .models import Register, Card
 # Create your views here.
 def index(request):
     error_message=''
-    if request.method=='POST':
-        username = request.POST['email']
-        password = request.POST['password']
-        post = Register.objects.get(email=username)
-        if post:
-            if password == post.password:
-                error_message='Wrong Password Entered'
-                request.session['username'] = username
-                return HttpResponseRedirect(reverse('hotels:index'))
-            else :
-                error_message='Wrong Username Entered'
-                return HttpResponseRedirect(reverse('hotels:index'))
-        else:
-            return HttpResponseRedirect(reverse('hotels:index'))
+    # if request.method=='POST':
+    #     username = request.POST['email']
+    #     password = request.POST['password']
+    #     post = Register.objects.get(email=username)
+    #     if post:
+    #         if password == post.password:
+    #             error_message='Wrong Password Entered'
+    #             request.session['username'] = username
+    #             return HttpResponseRedirect(reverse('hotels:index'))
+    #         else :
+    #             error_message='Wrong Username Entered'
+    #             return HttpResponseRedirect(reverse('hotels:index'))
+    #     else:
+    #         return HttpResponseRedirect(reverse('hotels:index'))
     
     card_list= Card.objects.all()
     logged_in = False
     if 'username' in request.session:
         logged_in = True
+    if 'username' not in request.session:
+        logged_in = False
     context = {
         'card_list' : card_list,
         'logged_in': logged_in,
         'error_message': error_message,
     }
-    return render(request, 'hotels/index.html', context)
+    return render(request, 'hotels/base.html', context)
 
 def makeCard(request):
     context = {
@@ -60,3 +62,23 @@ def logoutPage(request):
     except:
         pass
     return HttpResponseRedirect(reverse('hotels:index'))
+
+def loginPage(request):
+    username = password = ''
+    response_data = {}
+    if request.POST and request.is_ajax:
+        username = request.POST['email']
+        password = request.POST['password']
+        try:
+            get_user = Register.objects.get(email=username)
+            if get_user.password==password:
+                request.session['username'] = username
+                response_data = {'login' : "Success"}
+            else:
+                response_data = {'user':"password wrong"}
+        except Register.DoesNotExist:
+            response_data = {'user':"nouser"}
+    else:
+        username = password = ''
+        response_data = {'login': "Failed"}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

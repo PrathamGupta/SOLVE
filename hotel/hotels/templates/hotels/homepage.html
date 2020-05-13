@@ -1,0 +1,121 @@
+{% extends 'hotels/index.html' %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-light mb-2 nav-des bg-light">
+    LOGO
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-3 mr-auto">
+            <li class="nav-item ml-3">
+                <a class="nav-link" href="{% url 'hotels:makeCard' %}">Make Card</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav mr-3 ml-auto">
+            <li class="nav-item mr-3">
+                <a class="nav-link" href="#login" data-toggle="modal" data-target="#login">Login</a>   
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="#login" data-toggle="modal" data-target="#login">Register</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div id="login" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title">Login</h1>
+            </div>
+            <div class="modal-body">
+                <form role="login-form" id="loginform" method="POST" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="control-label">E-Mail Address</label>
+                        <div>
+                            <input type="email" class="form-control input-lg" name="email" id="login-email" required="required">
+                        </div>
+                    </div>
+                    <p class="text-danger text-center" id="no-user-error" style="display:none;">We didn't find you! Please Register</p>
+                    <div class="form-group">
+                        <label class="control-label">Password</label>
+                        <div>
+                            <input type="password" id="login-password" class="form-control input-lg" name="password" required="required">
+                        </div>
+                    </div>
+                    <p class="text-danger text-center" id="password-error" style="display:none;">Wrong Password!</p>
+                    <div class="form-group">
+                        <div>
+                            <div class="form-group text-center"> 
+                                <input type="submit" value="Login" class="btn  btn-lg btn-block btn-cakemporos" id="login-Submit">
+                            </div>  
+                        </div>
+                    </div>
+                </form>
+                <div class="col text-center">
+                    <a href="#" onclick="openForgotPassword()"><b>Forgot Password</b></a>&nbsp;<a href="#">or</a>&nbsp;<a href="#" onclick="openRegister()"><b>Register</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block body %}
+{% endblock body %}
+
+
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    $('$loginform').submit(function(e) {
+        var formId = $(this).attr('id');
+        var submitBtn = $(this).find('input[type=submit]');
+        submitBtn.prop('disabled', true);
+        $('#no-user-error').css('display', 'none');
+        $('#password-error').css('display', 'none');
+        e.preventDefault();
+        $.ajax({
+            url : "{% url 'hotels:loginPage' %}",
+            type: "POST",
+            data: $(this).serialize(),
+            success: function(data){
+                var login_response = jQuery.parseJson(data);
+                console.log(login_response);
+                if (login_response.user == "nouser"){
+                    $('#no-user-error').css('display', 'block');
+                    submitBtn.prop('disabled', false);
+                }
+                else if (login_response.user == "password wrong") {
+                    $('#password-error').css('display', 'block');
+                    submitBtn.prop('disabled', false);
+                }
+                else {
+                    if (login_response.login == "Failed") {
+                        alert("Invalid Login!");
+                    } else {
+                        document.getElementById(formId).reset();
+                        $('#login-modal').modal('hide');
+                        setTimeout(function() {
+                        location.reload();
+                        }, 400);
+                    }
+                }
+                submitBtn.prop('disabled', false);
+            },
+            error: function(data) {
+                $('#loginModal').modal('hide')
+            }
+        });
+    });
+</script>
+
+
+{% endblock javascript %}
+
+ 
+{% block javascr %}
+{% endblock javascr %}

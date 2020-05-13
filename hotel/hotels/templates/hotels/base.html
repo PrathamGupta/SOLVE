@@ -1,0 +1,29 @@
+{% extends 'hotels/homepage.html' %}
+
+{% block body %}
+
+{% if card_list %}
+    <ul>
+        {% for card in card_list %}
+        <li>{{ card.hotel_name }}</li>
+        <li>{{ card.city }}</li>
+        <li>{{ card.state }}</li>
+        <li>{{ card.date }}</li>
+        <li>{{ card.price }}</li>
+        <br>
+        {% endfor %}
+    </ul>
+    <br>
+    
+    
+{% else %}
+    <p> No Hotels Available </p>
+{% endif %}
+
+{% if logged_in  %}
+
+YOU HAVE LOGGED IN
+
+{% endif %}
+
+{% endblock body %}

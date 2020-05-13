@@ -1,75 +1,32 @@
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!DOCTYPE html>
+<html lang = "en">
 
-{% if card_list %}
-    <ul>
-        {% for card in card_list %}
-        <li>{{ card.hotel_name }}</li>
-        <li>{{ card.city }}</li>
-        <li>{{ card.state }}</li>
-        <li>{{ card.date }}</li>
-        <li>{{ card.price }}</li>
-        <br>
-        {% endfor %}
-    </ul>
-    <br>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% block style %}
+    {% endblock style %}
+</head>
+<body>
+
+    {% block content %}
+    {% endblock content %}
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
-    
-{% else %}
-    <p> No Hotels Available </p>
-{% endif %}
-{% if logged_in  %}
+    {% block javascript %}
+    {% endblock javascript %}
 
-YOU HAVE LOGGED IN
+</body>
 
-{% endif %}
+</html>
 
-    <a href="{% url 'hotels:makeCard' %}">Make Card</a>
-    <br>
-    <button type="button" class="btn" data-toggle="modal" data-target="#login">Login</button>
 
-    <div id="login" class="modal fade">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title">Login</h1>
-                </div>
-                <div class="modal-body">
-                    <form role="form" method="POST" action="">
-                        {% csrf_token %}
-                        <input type="hidden" name="_token" value="">
-                        <div class="form-group">
-                            <label class="control-label">E-Mail Address</label>
-                            <div>
-                                <input type="email" class="form-control input-lg" name="email" value="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Password</label>
-                            <div>
-                                <input type="password" class="form-control input-lg" name="password">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember"> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div>
-                                <button type="submit" class="btn btn-success">Login</button>
-     
-                                <a class="btn btn-link" href="">Forgot Your Password?</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+
+
