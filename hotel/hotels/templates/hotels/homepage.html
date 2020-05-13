@@ -1,37 +1,64 @@
 {% extends 'hotels/index.html' %}
+{% load static %}
 
 {% block content %}
-
-<nav class="navbar navbar-expand-lg navbar-light mb-2 nav-des bg-light">
-    LOGO
+<h5>
+<nav class="navbar  navbar-expand-lg navbar-light mb-2 nav-des bg-primary text-white">
+    <ul class="navbar-nav ml-3 mr-auto">
+        <li class="nav-item ml-3">
+            <img src="{% static 'hotels/a5cf24b760b2ef5d473d47b2e1db58a0.png'%}" width="30px">
+        </li>
+        <li class="nav-item ml-3">
+           <a class="nav-link text-white" href="{% url 'hotels:index' %}"> <b>HOTEL</b></a>
+        </li>
+    </ul>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-3 mr-auto">
             <li class="nav-item ml-3">
-                <a class="nav-link" href="{% url 'hotels:makeCard' %}">Make Card</a>
+                <a class="nav-link text-white" href="{% url 'hotels:makeCard' %}">Make Card</a>
+            </li>
+            <li class="nav-item ml-3">
+                <a class="nav-link text-white" href="{% url 'hotels:makeCard' %}">Make Card</a>
+            </li>
+            <li class="nav-item ml-3">
+                <a class="nav-link text-white" href="{% url 'hotels:makeCard' %}">Make Card</a>
+            </li>
+            <li class="nav-item ml-3">
+                <a class="nav-link text-white" href="{% url 'hotels:makeCard' %}">Make Card</a>
             </li>
         </ul>
         <ul class="navbar-nav mr-3 ml-auto">
             <li class="nav-item mr-3">
-                <a class="nav-link" href="#login" data-toggle="modal" data-target="#login">Login</a>   
+                <a class="nav-link text-white" href="#login" data-toggle="modal" data-target="#login">Login</a>   
             </li>
             <li class="nav-item ">
-                <a class="nav-link" href="#login" data-toggle="modal" data-target="#login">Register</a>
+                <a class="nav-link text-white" href="#login" data-toggle="modal" data-target="#login">Register</a>
             </li>
         </ul>
     </div>
 </nav>
+</h5>
 
 <div id="login" class="modal fade">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title">Login</h1>
+                <nav class="navbar  navbar-expand-lg navbar-light mb-2 nav-des ">
+                    <ul class="navbar-nav ml-3 mr-auto">
+                        <li class="nav-item">
+                            <h1 class="modal-title">Customer Login</h1>
+                        </li>
+                        <li class="nav-item">
+                            <h1 class="modal-title">Hotel Login</h1>
+                        </li>
+                    </ul>
+                </nav>
             </div>
             <div class="modal-body">
-                <form role="login-form" id="loginform" method="POST" action="">
+                <form class="login-form" id="loginform" method="POST" action="">
                     {% csrf_token %}
                     <div class="form-group">
                         <label class="control-label">E-Mail Address</label>
@@ -71,7 +98,8 @@
 
 {% block javascript %}
 <script>
-    $('$loginform').submit(function(e) {
+    $('#loginform').submit(function(e) {
+        console.log("HEY THERE");
         var formId = $(this).attr('id');
         var submitBtn = $(this).find('input[type=submit]');
         submitBtn.prop('disabled', true);

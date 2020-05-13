@@ -1,17 +1,56 @@
 {% extends 'hotels/homepage.html' %}
+{% load static %}
 
 {% block body %}
 
-{% if card_list %}
-    <ul>
+<div class="container-fluid ">
+    {% if card_list %}
+    <div class="flex-row mx-5">
+    <div class="row my-4 mx-auto  align-middle">
+        
         {% for card in card_list %}
-        <li>{{ card.hotel_name }}</li>
-        <li>{{ card.city }}</li>
-        <li>{{ card.state }}</li>
-        <li>{{ card.date }}</li>
-        <li>{{ card.price }}</li>
-        <br>
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row my-4">
+                        <div class="col-8">
+                            <h5 class="card-title">{{ card.hotel_name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ card.city }}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ card.state }}</h6>
+                        </div>
+                        <div class="col-4">
+                            <img src="{% static 'hotels/1200px-High-contrast-image-x-generic_transparent.svg.png' %}" style="max-width: 50px;">
+                        </div>
+                    </div>
+                  <div class="row my-4">
+                      <div class="col-8">
+                        <p class="card-text">Available Date: {{ card.date }}</p>
+                      </div>
+                      <div class="col-4">
+                        <p class="card-text">Price: {{ card.price }}</p>
+                      </div>
+                  </div>
+                </div>
+                <div class="card-body bg-primary" style="padding: 2%;">
+                  <div class="row text-center">
+                    <div class="col-12">
+                        <a href="#" class="card-link text-white align-middle">Book Now</a>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:4 %}
+        </div>
+        <div class="row my-4 mx-auto">
+        {% endif %}
         {% endfor %}
+    </div>
+    </div>
+    
+</div>
+
+        
     </ul>
     <br>
     
